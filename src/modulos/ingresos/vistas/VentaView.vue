@@ -363,7 +363,7 @@ h2 {
   padding: 0.8rem;
   border: 1px solid var(--color-borde);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--color-tarjeta);
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -423,7 +423,7 @@ h2 {
   padding: 0.25rem 0.6rem;
   border: 1px solid var(--color-borde);
   border-radius: 999px;
-  background: #ffffff;
+  background: var(--color-tarjeta);
   font: inherit;
   font-size: 0.85rem;
   cursor: pointer;
@@ -431,7 +431,7 @@ h2 {
 .chip[aria-pressed='true'] {
   background: var(--color-marca);
   border-color: var(--color-marca);
-  color: #ffffff;
+  color: var(--color-sobre-oscuro);
 }
 .chip[aria-pressed='true'] :deep(.monto) {
   color: inherit;

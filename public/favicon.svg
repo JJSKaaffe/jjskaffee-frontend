@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- La misma taza de src/compartido/componentes/MarcaJJSKaffee.vue, sobre fondo crema -->
+  <rect width="32" height="32" rx="7" fill="#f5ede3"/>
+  <path d="M11.5 3.5c-1.6 1.4 1.6 2.6 0 4M17.5 3.5c-1.6 1.4 1.6 2.6 0 4" fill="none" stroke="#c08552" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M5 11.5h19v5.5a7.5 7.5 0 0 1-7.5 7.5h-4A7.5 7.5 0 0 1 5 17z" fill="#6f4e37"/>
+  <path d="M24 13.5h1.5a3.25 3.25 0 0 1 0 6.5H23M3 28h23" fill="none" stroke="#6f4e37" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

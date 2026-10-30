@@ -3,6 +3,7 @@
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+import MarcaJJSKaffee from '@/compartido/componentes/MarcaJJSKaffee.vue'
 import MensajeAviso from '@/compartido/componentes/MensajeAviso.vue'
 import { ErrorApi } from '@/compartido/api/clienteHttp'
 import { useSesionStore } from '@/compartido/sesion/sesionStore'
@@ -63,44 +64,51 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="tarjeta tarjeta--angosta">
-    <h1>Elige la cafetería</h1>
-    <p class="pantalla__descripcion">
-      {{ sesion.correo ? `Entraste como ${sesion.correo}. ` : '' }}Tu rol puede ser distinto en cada
-      cafetería.
-    </p>
+  <div class="pantalla-acceso">
+    <MarcaJJSKaffee tamano="grande" />
+    <section class="tarjeta">
+      <h1>Elige la cafetería</h1>
+      <p class="pantalla__descripcion">
+        {{ sesion.correo ? `Entraste como ${sesion.correo}. ` : '' }}Tu rol puede ser distinto en
+        cada cafetería.
+      </p>
 
-    <MensajeAviso v-if="error" tipo="error">{{ error }}</MensajeAviso>
-    <p v-if="cargando" class="pantalla__descripcion" role="status">Cargando tus cafeterías…</p>
+      <MensajeAviso v-if="error" tipo="error">{{ error }}</MensajeAviso>
+      <p v-if="cargando" class="pantalla__descripcion" role="status">Cargando tus cafeterías…</p>
 
-    <MensajeAviso v-else-if="!error && acceso.cafeterias.length === 0" tipo="info">
-      Todavía no perteneces a ninguna cafetería. Pide al administrador que te agregue.
-    </MensajeAviso>
+      <MensajeAviso v-else-if="!error && acceso.cafeterias.length === 0" tipo="info">
+        Todavía no perteneces a ninguna cafetería. Pide al administrador que te agregue.
+      </MensajeAviso>
 
-    <ul v-else class="lista-cafeterias">
-      <li v-for="cafeteria in acceso.cafeterias" :key="cafeteria.idCafeteria">
-        <button
-          type="button"
-          class="cafeteria"
-          :class="{ 'cafeteria--actual': sesion.cafeteria?.idCafeteria === cafeteria.idCafeteria }"
-          :disabled="!cafeteria.activa || eligiendo !== null"
-          @click="elegir(cafeteria)"
-        >
-          <span class="cafeteria__nombre">{{ cafeteria.nombre }}</span>
-          <span class="etiqueta">{{ textoRol[cafeteria.rol] }}</span>
-          <span v-if="!cafeteria.activa" class="cafeteria__estado">Inactiva</span>
-          <span v-else-if="eligiendo === cafeteria.idCafeteria" class="cafeteria__estado">
-            Entrando…
-          </span>
+      <ul v-else class="lista-cafeterias">
+        <li v-for="cafeteria in acceso.cafeterias" :key="cafeteria.idCafeteria">
+          <button
+            type="button"
+            class="cafeteria"
+            :class="{
+              'cafeteria--actual': sesion.cafeteria?.idCafeteria === cafeteria.idCafeteria,
+            }"
+            :disabled="!cafeteria.activa || eligiendo !== null"
+            @click="elegir(cafeteria)"
+          >
+            <span class="cafeteria__nombre">{{ cafeteria.nombre }}</span>
+            <span class="etiqueta">{{ textoRol[cafeteria.rol] }}</span>
+            <span v-if="!cafeteria.activa" class="cafeteria__estado">Inactiva</span>
+            <span v-else-if="eligiendo === cafeteria.idCafeteria" class="cafeteria__estado">
+              Entrando…
+            </span>
+          </button>
+        </li>
+      </ul>
+
+      <div class="acciones">
+        <button v-if="error" type="button" class="boton" @click="cargar">Reintentar</button>
+        <button type="button" class="boton boton--texto" @click="cerrarSesion">
+          Cerrar sesión
         </button>
-      </li>
-    </ul>
-
-    <div class="acciones">
-      <button v-if="error" type="button" class="boton" @click="cargar">Reintentar</button>
-      <button type="button" class="boton boton--texto" @click="cerrarSesion">Cerrar sesión</button>
-    </div>
-  </section>
+      </div>
+    </section>
+  </div>
 </template>
 
 <style scoped>
@@ -122,7 +130,8 @@ h1 {
   padding: 0.9rem 1rem;
   border: 1px solid var(--color-borde);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--color-tarjeta);
+  color: var(--color-texto);
   font: inherit;
   text-align: left;
   cursor: pointer;

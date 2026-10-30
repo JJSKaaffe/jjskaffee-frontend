@@ -1,0 +1,237 @@
+/*
+ * Tema de JJSKaffee: un solo diseño para todas las cafeterías.
+ * Los componentes usan solo estas variables, nunca colores sueltos.
+ * Todos los textos cumplen contraste WCAG AA (4.5:1) sobre su fondo.
+ */
+:root {
+  /* Paleta de café */
+  --color-espresso: #3b2a20; /* textos fuertes y barra superior */
+  --color-cafe: #6f4e37; /* marca y botones principales */
+  --color-cafe-oscuro: #573c2a; /* botón principal al pasar el mouse */
+  --color-caramelo: #c08552; /* acentos: menú activo, vapor de la taza. No usar como texto */
+  --color-crema: #f5ede3; /* fondo de la página */
+  --color-leche: #fffaf4; /* fondo de tarjetas */
+  --color-borde: #e6d9cc; /* bordes decorativos */
+  --color-borde-campo: #a08670; /* borde de campos (3:1 sobre leche) */
+  --color-arena: #f3e3d1; /* fondo de etiquetas */
+
+  /* Usos */
+  --color-texto: var(--color-espresso);
+  --color-suave: #6b5646; /* texto secundario */
+  --color-marca: var(--color-cafe);
+  --color-fondo: var(--color-crema);
+  --color-tarjeta: var(--color-leche);
+  --color-sobre-oscuro: var(--color-leche); /* texto sobre espresso o café */
+  --color-sobre-oscuro-suave: var(--color-borde);
+
+  /* Ingresos en verde; errores y egresos en rojo (ADR-0008) */
+  --color-ingreso: #1e7b34;
+  --color-ingreso-fondo: #e8f5e9;
+  --color-ingreso-borde: #b7dfb9;
+  --color-ingreso-texto: #1e5e22;
+  --color-error: #b3261e;
+  --color-error-fondo: #fdecea;
+  --color-error-borde: #f5c2bc;
+  --color-error-texto: #8a1c13;
+  --color-info-fondo: #f8ecdd;
+  --color-info-borde: #e2c3a3;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-fondo);
+}
+
+.contenido {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .contenido {
+    padding: 1rem;
+  }
+}
+
+.pantalla__descripcion {
+  color: var(--color-suave);
+}
+
+/* ---- Iniciar sesión y elegir cafetería: marca grande sobre la tarjeta ---- */
+.pantalla-acceso {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: center;
+  max-width: 440px;
+  margin: 2.5rem auto;
+}
+
+.pantalla-acceso > .tarjeta {
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .pantalla-acceso {
+    margin: 1rem auto;
+  }
+}
+
+/* ---- Piezas comunes de las pantallas ---- */
+.tarjeta {
+  padding: 1.25rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 10px;
+  background: var(--color-tarjeta);
+}
+
+.tarjeta--media {
+  max-width: 560px;
+  margin: 1rem auto;
+}
+
+.formulario {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.campo {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.campo input,
+.campo select {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--color-borde-campo);
+  border-radius: 6px;
+  background: var(--color-tarjeta);
+  color: var(--color-texto);
+  font: inherit;
+  font-weight: 400;
+}
+
+.campo input[aria-invalid='true'],
+.campo select[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+.campo--en-linea input {
+  min-width: 220px;
+}
+
+@media (max-width: 480px) {
+  .campo--en-linea input {
+    min-width: 0;
+  }
+}
+
+.campo__error {
+  min-height: 1em;
+  color: var(--color-error);
+  font-weight: 400;
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--color-borde-campo);
+  border-radius: 6px;
+  background: var(--color-tarjeta);
+  color: var(--color-texto);
+  font: inherit;
+  cursor: pointer;
+}
+
+.boton:hover:not(:disabled) {
+  border-color: var(--color-marca);
+}
+
+.boton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.boton--principal {
+  background: var(--color-marca);
+  border-color: var(--color-marca);
+  color: var(--color-sobre-oscuro);
+  font-weight: 600;
+}
+
+.boton--principal:hover:not(:disabled) {
+  background: var(--color-cafe-oscuro);
+  border-color: var(--color-cafe-oscuro);
+}
+
+.boton--grande {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  font-size: 1.05rem;
+}
+
+.boton--texto {
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-marca);
+  text-decoration: underline;
+  padding: 0.25rem 0.5rem;
+}
+
+.boton--icono {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--color-arena);
+  color: var(--color-marca);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-marca);
+  outline-offset: 2px;
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

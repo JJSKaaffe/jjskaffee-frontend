@@ -19,9 +19,9 @@ const texto = computed(() => formatoPesos(props.valor))
   white-space: nowrap;
 }
 .monto--ingreso {
-  color: #1e7b34;
+  color: var(--color-ingreso);
 }
 .monto--egreso {
-  color: #b3261e;
+  color: var(--color-error);
 }
 </style>

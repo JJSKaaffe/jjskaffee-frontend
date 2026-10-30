@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+import '@/compartido/estilos/tema.css'
 import App from './App.vue'
 import router from './router'
 

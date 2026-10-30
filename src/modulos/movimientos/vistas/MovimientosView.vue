@@ -269,12 +269,12 @@ h1 {
   text-align: right !important;
 }
 .etiqueta--ingreso {
-  background: #e8f5e9;
-  color: #1e5e22;
+  background: var(--color-ingreso-fondo);
+  color: var(--color-ingreso-texto);
 }
 .etiqueta--egreso {
-  background: #fdecea;
-  color: #8a1c13;
+  background: var(--color-error-fondo);
+  color: var(--color-error-texto);
 }
 .paginacion {
   display: flex;

@@ -17,18 +17,18 @@ withDefaults(defineProps<{ tipo?: 'error' | 'exito' | 'info' }>(), { tipo: 'info
   border: 1px solid;
 }
 .aviso--error {
-  background: #fdecea;
-  border-color: #f5c2bc;
-  color: #8a1c13;
+  background: var(--color-error-fondo);
+  border-color: var(--color-error-borde);
+  color: var(--color-error-texto);
 }
 .aviso--exito {
-  background: #e8f5e9;
-  border-color: #b7dfb9;
-  color: #1e5e22;
+  background: var(--color-ingreso-fondo);
+  border-color: var(--color-ingreso-borde);
+  color: var(--color-ingreso-texto);
 }
 .aviso--info {
-  background: #eef4fb;
-  border-color: #c5d9f0;
-  color: #1f3a5f;
+  background: var(--color-info-fondo);
+  border-color: var(--color-info-borde);
+  color: var(--color-texto);
 }
 </style>

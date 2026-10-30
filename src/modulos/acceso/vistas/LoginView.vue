@@ -3,6 +3,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+import MarcaJJSKaffee from '@/compartido/componentes/MarcaJJSKaffee.vue'
 import MensajeAviso from '@/compartido/componentes/MensajeAviso.vue'
 import { ErrorApi } from '@/compartido/api/clienteHttp'
 import { firebaseConfigurado } from '@/compartido/auth/firebase'
@@ -59,62 +60,58 @@ async function iniciarSesion() {
 </script>
 
 <template>
-  <section class="tarjeta tarjeta--angosta">
-    <p class="marca">JJSKaffee</p>
-    <h1>Iniciar sesión</h1>
-    <p class="pantalla__descripcion">Control de ingresos y egresos de tu cafetería.</p>
+  <div class="pantalla-acceso">
+    <MarcaJJSKaffee tamano="grande" />
+    <section class="tarjeta">
+      <h1>Iniciar sesión</h1>
+      <p class="pantalla__descripcion">Registra las ventas e ingresos de tu cafetería.</p>
 
-    <MensajeAviso v-if="!configurado" tipo="error">
-      Falta configurar Firebase: copia <code>.env.example</code> como <code>.env.local</code> y
-      llena las variables <code>VITE_FIREBASE_*</code>.
-    </MensajeAviso>
+      <MensajeAviso v-if="!configurado" tipo="error">
+        Falta configurar Firebase: copia <code>.env.example</code> como <code>.env.local</code> y
+        llena las variables <code>VITE_FIREBASE_*</code>.
+      </MensajeAviso>
 
-    <form class="formulario" novalidate @submit.prevent="iniciarSesion">
-      <label class="campo">
-        <span>Correo</span>
-        <input
-          v-model="correo"
-          type="email"
-          name="correo"
-          autocomplete="username"
-          required
-          autofocus
-          :disabled="enviando"
-        />
-      </label>
-      <label class="campo">
-        <span>Contraseña</span>
-        <input
-          v-model="clave"
-          type="password"
-          name="clave"
-          autocomplete="current-password"
-          required
-          :disabled="enviando"
-        />
-      </label>
+      <form class="formulario" novalidate @submit.prevent="iniciarSesion">
+        <label class="campo">
+          <span>Correo</span>
+          <input
+            v-model="correo"
+            type="email"
+            name="correo"
+            autocomplete="username"
+            required
+            autofocus
+            :disabled="enviando"
+          />
+        </label>
+        <label class="campo">
+          <span>Contraseña</span>
+          <input
+            v-model="clave"
+            type="password"
+            name="clave"
+            autocomplete="current-password"
+            required
+            :disabled="enviando"
+          />
+        </label>
 
-      <MensajeAviso v-if="error" tipo="error">{{ error }}</MensajeAviso>
+        <MensajeAviso v-if="error" tipo="error">{{ error }}</MensajeAviso>
 
-      <button
-        type="submit"
-        class="boton boton--principal"
-        :disabled="enviando || !configurado || !correo || !clave"
-      >
-        {{ enviando ? 'Entrando…' : 'Entrar' }}
-      </button>
-    </form>
-  </section>
+        <button
+          type="submit"
+          class="boton boton--principal"
+          :disabled="enviando || !configurado || !correo || !clave"
+        >
+          {{ enviando ? 'Entrando…' : 'Entrar' }}
+        </button>
+      </form>
+    </section>
+  </div>
 </template>
 
 <style scoped>
-.marca {
-  margin: 0;
-  color: var(--color-marca);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
 h1 {
-  margin: 0.25rem 0 0;
+  margin: 0;
 }
 </style>

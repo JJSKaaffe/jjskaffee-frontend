@@ -57,15 +57,32 @@ src
 │   ├── api/clienteHttp.ts     (único que hace peticiones: token, X-Cafeteria-Id, Idempotency-Key, errores)
 │   ├── sesion/                (sesionStore: persona, cafetería elegida, rol y permisos)
 │   ├── auth/firebase.ts       (inicio y cierre de sesión con Firebase Authentication)
-│   ├── componentes/           (MensajeAviso, MontoDinero)
+│   ├── componentes/           (MarcaJJSKaffee, MensajeAviso, MontoDinero)
+│   ├── estilos/tema.css       (paleta de café y piezas comunes: tarjetas, campos, botones)
 │   └── utils/formato.ts       (pesos colombianos y fechas en hora de Colombia)
 └── modulos/
     ├── acceso/                (iniciar sesión y elegir cafetería)
     ├── ingresos/              (venta e ingreso libre)
-    ├── egresos/               (registrar egreso)
     └── movimientos/           (listado con filtros y totales)
         └── vistas · componentes · store · api · tipos   (cada módulo tiene las mismas carpetas)
 ```
+
+**Egresos no está en esta entrega.** Esta entrega cubre registrar ingresos; registrar egresos queda fuera de alcance y el backend no expone sus categorías. Movimientos sí muestra los egresos que devuelva el backend.
+
+## Diseño
+
+Un solo diseño para todas las cafeterías, sin configuración por cafetería. Los colores están como variables en [`tema.css`](src/compartido/estilos/tema.css) y los componentes usan solo esas variables:
+
+| Variable | Color | Uso |
+|---|---|---|
+| `--color-espresso` | `#3b2a20` | Textos fuertes y barra superior |
+| `--color-cafe` | `#6f4e37` | Marca y botones principales |
+| `--color-caramelo` | `#c08552` | Acentos (menú activo, vapor de la taza); no se usa como texto |
+| `--color-crema` | `#f5ede3` | Fondo de la página |
+| `--color-leche` | `#fffaf4` | Fondo de tarjetas |
+| `--color-borde` | `#e6d9cc` | Bordes |
+
+Los ingresos van en verde y los errores y egresos en rojo. Todos los textos cumplen contraste WCAG AA. La marca (`MarcaJJSKaffee`: taza en SVG + "JJSKaffee") aparece grande al iniciar sesión y al elegir cafetería, y pequeña en la barra junto al nombre de la cafetería, que también va en el título de la pestaña. El favicon es la misma taza (`public/favicon.svg`).
 
 ## Reglas del código
 
@@ -95,7 +112,7 @@ trivy fs --scanners vuln,secret,misconfig --severity HIGH,CRITICAL --ignore-unfi
 
 ## Estado
 
-- **Listo**: estructura, Firebase, cliente HTTP, sesión, guardas por permiso, stores y api de los cuatro módulos con los tipos de los DTO del backend, y pruebas del cliente HTTP y los formatos.
+- **Listo**: estructura, Firebase, cliente HTTP, sesión, guardas por permiso, stores y api de los tres módulos con los tipos de los DTO del backend, y pruebas del cliente HTTP y los formatos.
 - **Por construir**: las pantallas. Cada vista indica qué store y qué funciones usar.
 
 ## Criterios de calidad que guían la interfaz
