@@ -6,7 +6,8 @@ import pluginOxlint from 'eslint-plugin-oxlint'
 import skipFormatting from 'eslint-config-prettier/flat'
 import type { Linter } from 'eslint'
 
-const MODULOS = ['acceso', 'ingresos', 'egresos', 'movimientos']
+// Registrar egresos no está en esta entrega: no hay módulo egresos
+const MODULOS = ['acceso', 'ingresos', 'movimientos']
 
 function prohibirImports(group: string[], message: string): Linter.RulesRecord {
   return { 'no-restricted-imports': ['error', { patterns: [{ group, message }] }] }

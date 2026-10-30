@@ -42,12 +42,6 @@ const router = createRouter({
       meta: { requiereCafeteria: true, permiso: 'REGISTRAR_INGRESO_LIBRE' },
     },
     {
-      path: '/egreso',
-      name: 'egreso',
-      component: () => import('@/modulos/egresos/vistas/EgresoView.vue'),
-      meta: { requiereCafeteria: true, permiso: 'REGISTRAR_EGRESO' },
-    },
-    {
       path: '/movimientos',
       name: 'movimientos',
       component: () => import('@/modulos/movimientos/vistas/MovimientosView.vue'),
