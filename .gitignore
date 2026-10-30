@@ -141,3 +141,17 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Vue / Vite
+dist-ssr
+*.local
+__screenshots__/
+*.timestamp-*-*.mjs
+.DS_Store
+
+# Editores: se versionan las recomendaciones y la configuración de VS Code del proyecto
+.idea
+*.suo
+*.sw?
+
+CLAUDE.md
