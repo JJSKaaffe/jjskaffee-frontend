@@ -1,0 +1,60 @@
+name: Calidad y Seguridad
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+# Las acciones van fijadas al hash del commit (no al tag): un tag se puede mover a otro código,
+# un hash no. El comentario indica la versión; para actualizar, cambia hash y comentario juntos.
+
+jobs:
+  calidad:
+    name: Lint, tipos, pruebas y build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      # Instala exactamente lo que dice package-lock.json
+      - run: npm ci
+
+      # Lint sin --fix: en CI no se corrige el código, se falla.
+      # ESLint hace cumplir las reglas del diagrama de paquetes (módulos que no se importan
+      # entre sí, solo clienteHttp usa fetch, etc.): cumple el papel de ArchUnit en el backend.
+      - name: Oxlint
+        run: npx oxlint .
+      - name: ESLint
+        run: npx eslint .
+
+      - name: Revisar tipos
+        run: npm run type-check
+
+      - name: Pruebas
+        run: npm test
+
+      - name: Build de producción
+        run: npm run build-only
+
+  trivy:
+    name: Escaneo Trivy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Trivy lee las versiones de package-lock.json; no hace falta instalar node_modules
+      - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          version: v0.75.0          # la misma versión de Trivy que se usa en local
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
