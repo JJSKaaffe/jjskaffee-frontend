@@ -45,6 +45,16 @@ En local, las peticiones a `/api/...` las reenvía Vite al backend sin el prefij
 | `npm run format` | Formatea `src/` con Prettier |
 | `npm run build` | Revisa los tipos y genera la versión de producción en `dist/` |
 
+## Despliegue
+
+Se publica en **Firebase Hosting** (proyecto `jjskafee`): **https://jjskafee.web.app**.
+
+1. Crea `.env.production.local` (no se sube) con `VITE_API_URL=https://<url-del-gateway>/api` y las mismas `VITE_FIREBASE_*` de `.env.local`. La URL del API queda fija al compilar.
+2. `npm run build`
+3. `firebase deploy --only hosting`
+
+`https://jjskafee.web.app` debe estar en `JJSKAFFEE_CORS_ORIGENES` del backend y en los dominios autorizados de Firebase Authentication. Pasos completos, qué hace `firebase.json` y qué cambiar cuando se active el WAF: [docs/despliegue.md](docs/despliegue.md).
+
 ## Estructura
 
 Se organiza por **módulo de negocio**, igual que el backend. Es la estructura del [diagrama de paquetes](https://github.com/JJSKaaffe/jjskaffee-docs/blob/main/diseno/03-diagrama-paquetes.md).
