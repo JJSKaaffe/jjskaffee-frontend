@@ -84,6 +84,17 @@ body {
   width: 100%;
 }
 
+/* "¿No tienes cuenta? Crear cuenta" / "¿Ya tienes cuenta? Inicia sesión" */
+.pantalla-acceso__cambiar {
+  margin: 1rem 0 0;
+  text-align: center;
+}
+
+.pantalla-acceso__cambiar a {
+  color: var(--color-marca);
+  font-weight: 600;
+}
+
 @media (max-width: 480px) {
   .pantalla-acceso {
     margin: 1rem auto;

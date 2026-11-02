@@ -55,6 +55,14 @@ Se publica en **Firebase Hosting** (proyecto `jjskafee`): **https://jjskafee.web
 
 `https://jjskafee.web.app` debe estar en `JJSKAFFEE_CORS_ORIGENES` del backend y en los dominios autorizados de Firebase Authentication. Pasos completos, qué hace `firebase.json` y qué cambiar cuando se active el WAF: [docs/despliegue.md](docs/despliegue.md).
 
+## Funcionalidades
+
+- **Crear cuenta** (`/registrarse`): nombre, correo y contraseña (mínimo 8 caracteres, confirmada). La cuenta se crea en **Firebase Authentication** (ADR-0001): el correo y la contraseña quedan en Firebase, nunca en el backend ni en la base. Al terminar, la sesión queda iniciada y se pasa a elegir la cafetería.
+- **Iniciar sesión** (`/iniciar-sesion`) con correo y contraseña de Firebase. Con la sesión ya iniciada, estas dos pantallas llevan directo a elegir la cafetería.
+- **Elegir cafetería** (`/cafeterias`): la persona ve las cafeterías a las que pertenece y su rol en cada una. Una cuenta nueva no pertenece a ninguna: la pantalla muestra su **código** (UID de Firebase) con un botón para copiarlo, para que se lo comparta al administrador de la cafetería, que es quien la agrega (tabla `usuarios`: `firebase_uid` + cafetería + rol). Con "Ya me agregaron, actualizar" vuelve a consultar sus cafeterías.
+- **Registrar venta** (`/venta`) e **ingreso libre** (`/ingreso-libre`, solo administrador), siempre con `Idempotency-Key`.
+- **Movimientos** (`/movimientos`): listado con filtros por fecha en hora de Colombia y totales.
+
 ## Estructura
 
 Se organiza por **módulo de negocio**, igual que el backend. Es la estructura del [diagrama de paquetes](https://github.com/JJSKaaffe/jjskaffee-docs/blob/main/diseno/03-diagrama-paquetes.md).
@@ -66,12 +74,12 @@ src
 ├── compartido/
 │   ├── api/clienteHttp.ts     (único que hace peticiones: token, X-Cafeteria-Id, Idempotency-Key, errores)
 │   ├── sesion/                (sesionStore: persona, cafetería elegida, rol y permisos)
-│   ├── auth/firebase.ts       (inicio y cierre de sesión con Firebase Authentication)
+│   ├── auth/                  (firebase.ts: crear cuenta, iniciar y cerrar sesión; erroresFirebase.ts)
 │   ├── componentes/           (MarcaJJSKaffee, MensajeAviso, MontoDinero)
 │   ├── estilos/tema.css       (paleta de café y piezas comunes: tarjetas, campos, botones)
 │   └── utils/formato.ts       (pesos colombianos y fechas en hora de Colombia)
 └── modulos/
-    ├── acceso/                (iniciar sesión y elegir cafetería)
+    ├── acceso/                (crear cuenta, iniciar sesión y elegir cafetería)
     ├── ingresos/              (venta e ingreso libre)
     └── movimientos/           (listado con filtros y totales)
         └── vistas · componentes · store · api · tipos   (cada módulo tiene las mismas carpetas)
@@ -123,7 +131,8 @@ trivy fs --scanners vuln,secret,misconfig --severity HIGH,CRITICAL --ignore-unfi
 ## Estado
 
 - **Listo**: estructura, Firebase, cliente HTTP, sesión, guardas por permiso, stores y api de los tres módulos con los tipos de los DTO del backend, y pruebas del cliente HTTP y los formatos.
-- **Por construir**: las pantallas. Cada vista indica qué store y qué funciones usar.
+- **Pantallas construidas**: acceso (crear cuenta, iniciar sesión y elegir cafetería), venta, ingreso libre y movimientos.
+- **Publicado** en **https://jjskafee.web.app**, con el backend detrás del API Gateway.
 
 ## Criterios de calidad que guían la interfaz
 

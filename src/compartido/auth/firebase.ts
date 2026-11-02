@@ -1,9 +1,11 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app'
 import {
+  createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
   type Auth,
   type User,
 } from 'firebase/auth'
@@ -55,6 +57,31 @@ export function esperarUsuarioInicial(): Promise<User | null> {
 export async function iniciarSesionFirebase(correo: string, clave: string): Promise<User> {
   const credencial = await signInWithEmailAndPassword(obtenerAuth(), correo, clave)
   return credencial.user
+}
+
+/**
+ * Crea la cuenta en Firebase (correo y contraseña quedan allá, nunca en el backend) y deja la
+ * sesión iniciada. La cuenta nace sin cafetería: el administrador la agrega después con su UID.
+ */
+export async function registrarFirebase(
+  nombre: string,
+  correo: string,
+  clave: string,
+): Promise<User> {
+  const credencial = await createUserWithEmailAndPassword(obtenerAuth(), correo, clave)
+  try {
+    await guardarNombreFirebase(credencial.user, nombre)
+  } catch (error) {
+    // La cuenta ya existe y la sesión está abierta: no se corta el registro por el nombre
+    console.warn('La cuenta se creó, pero no se pudo guardar el nombre en Firebase.', error)
+  }
+  return credencial.user
+}
+
+/** Guarda el nombre (displayName) y renueva el token para que ya lleve ese nombre. */
+export async function guardarNombreFirebase(usuario: User, nombre: string): Promise<void> {
+  await updateProfile(usuario, { displayName: nombre })
+  await usuario.getIdToken(true)
 }
 
 export async function cerrarSesionFirebase(): Promise<void> {
