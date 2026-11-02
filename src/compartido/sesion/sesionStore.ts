@@ -6,6 +6,7 @@ import {
   esperarUsuarioInicial,
   iniciarSesionFirebase,
   obtenerToken,
+  registrarFirebase,
 } from '@/compartido/auth/firebase'
 import type { CafeteriaElegida, Permiso, UsuarioEnCafeteria } from './tipos'
 
@@ -65,6 +66,14 @@ export const useSesionStore = defineStore('sesion', () => {
     fijarCafeteria(null)
   }
 
+  /** Crea la cuenta en Firebase y deja la sesión iniciada, todavía sin cafetería. */
+  async function registrar(nombre: string, correoIngresado: string, clave: string): Promise<void> {
+    const usuarioFirebase = await registrarFirebase(nombre, correoIngresado, clave)
+    uid.value = usuarioFirebase.uid
+    correo.value = usuarioFirebase.email
+    fijarCafeteria(null)
+  }
+
   function fijarCafeteria(elegida: CafeteriaElegida | null): void {
     cafeteria.value = elegida
     guardar(CLAVE_CAFETERIA, elegida)
@@ -105,6 +114,7 @@ export const useSesionStore = defineStore('sesion', () => {
     autenticado,
     restaurar,
     iniciarSesion,
+    registrar,
     fijarCafeteria,
     fijarUsuario,
     tienePermiso,

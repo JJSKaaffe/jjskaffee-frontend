@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Inicio de sesión con Firebase Authentication (ADR-0001). El sistema no guarda contraseñas.
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 
 import MarcaJJSKaffee from '@/compartido/componentes/MarcaJJSKaffee.vue'
 import MensajeAviso from '@/compartido/componentes/MensajeAviso.vue'
@@ -106,6 +106,11 @@ async function iniciarSesion() {
           {{ enviando ? 'Entrando…' : 'Entrar' }}
         </button>
       </form>
+
+      <p class="pantalla-acceso__cambiar">
+        ¿No tienes cuenta?
+        <RouterLink :to="{ name: 'registrarse' }">Crear cuenta</RouterLink>
+      </p>
     </section>
   </div>
 </template>

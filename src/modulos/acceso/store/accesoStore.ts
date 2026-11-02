@@ -6,7 +6,7 @@ import { accesoApi } from '../api/accesoApi'
 import type { CafeteriaDelUsuario } from '../tipos/acceso'
 
 /**
- * Flujo de entrada: iniciar sesión → ver las cafeterías de la persona → elegir una → cargar el rol.
+ * Flujo de entrada: iniciar sesión (o crear la cuenta) → ver las cafeterías de la persona → elegir una → cargar el rol.
  * Lo que queda elegido se guarda en la sesión (compartido) para que lo use todo el sistema.
  */
 export const useAccesoStore = defineStore('acceso', () => {
@@ -16,6 +16,15 @@ export const useAccesoStore = defineStore('acceso', () => {
   async function iniciarSesion(correo: string, clave: string): Promise<void> {
     await sesion.iniciarSesion(correo, clave)
     await cargarCafeterias()
+  }
+
+  /**
+   * Crea la cuenta y deja la sesión iniciada. Una cuenta nueva no pertenece a ninguna cafetería:
+   * la lista se vacía y la pantalla de elegir cafetería la vuelve a pedir al backend.
+   */
+  async function registrar(nombre: string, correo: string, clave: string): Promise<void> {
+    await sesion.registrar(nombre, correo, clave)
+    cafeterias.value = []
   }
 
   async function cargarCafeterias(): Promise<void> {
@@ -39,5 +48,5 @@ export const useAccesoStore = defineStore('acceso', () => {
     await sesion.cerrarSesion()
   }
 
-  return { cafeterias, iniciarSesion, cargarCafeterias, elegirCafeteria, cerrarSesion }
+  return { cafeterias, iniciarSesion, registrar, cargarCafeterias, elegirCafeteria, cerrarSesion }
 })

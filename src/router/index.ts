@@ -7,6 +7,8 @@ declare module 'vue-router' {
   interface RouteMeta {
     /** Se puede abrir sin iniciar sesión. */
     publica?: boolean
+    /** Solo sin sesión (iniciar sesión, crear cuenta): con sesión se va a elegir la cafetería. */
+    soloSinSesion?: boolean
     /** Necesita una cafetería elegida (X-Cafeteria-Id). */
     requiereCafeteria?: boolean
     /** Permiso que debe tener el rol en la cafetería elegida. */
@@ -22,7 +24,13 @@ const router = createRouter({
       path: '/iniciar-sesion',
       name: 'iniciar-sesion',
       component: () => import('@/modulos/acceso/vistas/LoginView.vue'),
-      meta: { publica: true },
+      meta: { publica: true, soloSinSesion: true },
+    },
+    {
+      path: '/registrarse',
+      name: 'registrarse',
+      component: () => import('@/modulos/acceso/vistas/RegistroView.vue'),
+      meta: { publica: true, soloSinSesion: true },
     },
     {
       path: '/cafeterias',
@@ -52,13 +60,15 @@ const router = createRouter({
 })
 
 /**
- * Guardas: sin sesión → iniciar sesión; sin cafetería → elegirla; sin permiso → otra pantalla.
+ * Guardas: con sesión, iniciar sesión y crear cuenta → elegir cafetería; sin sesión → iniciar
+ * sesión; sin cafetería → elegirla; sin permiso → otra pantalla.
  * Ocultar pantallas no es seguridad: el backend vuelve a revisar el permiso en cada petición.
  */
 router.beforeEach(async (destino) => {
   const sesion = useSesionStore()
   await sesion.restaurar()
 
+  if (destino.meta.soloSinSesion && sesion.autenticado) return { name: 'elegir-cafeteria' }
   if (destino.meta.publica) return true
   if (!sesion.autenticado) return { name: 'iniciar-sesion' }
   if (destino.meta.requiereCafeteria && !sesion.cafeteria) return { name: 'elegir-cafeteria' }
